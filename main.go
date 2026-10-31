@@ -23,22 +23,22 @@ type Message struct {
 }
 
 type RefreshResponse struct {
-    success bool    `json:"success"`
-    id      string  `json:"id"`
-    err     string  `json:"err"`
+    Success bool    `json:"success"`
+    Id      string  `json:"id"`
+    Err     string  `json:"err"`
 }
 
 type Result struct {
-    price float64 `json:"price"`
-    time  int64   `json:"time"`
+    Price float64 `json:"price"`
+    Time  int64   `json:"time"`
 }
 
 type ExchangeRates struct {
-    success   bool               `json:"success"`
-    timestamp int64              `json:"timestamp"`
-    base      string             `json:"base"`
-    date      string             `json:"date"`
-    rates     map[string]float64 `json:"rates"`
+    Success   bool               `json:"success"`
+    Timestamp int64              `json:"timestamp"`
+    Base      string             `json:"base"`
+    Date      string             `json:"date"`
+    Rates     map[string]float64 `json:"rates"`
 }
 
 func generate_id() string {
@@ -77,7 +77,7 @@ func background_refresh() {
             fmt.Printf("refreshing failed: %v\n", err2)
             continue
         }
-        if !exchange_rates.success {
+        if !exchange_rates.Success {
             fmt.Println("refreshing failed: provider declined")
             continue
         }
@@ -89,12 +89,12 @@ func background_refresh() {
 func api_refresh(w http.ResponseWriter, r *http.Request) {  
     id := generate_id()
     currency := r.URL.RawQuery
-    resp := RefreshResponse{success: true, id: id, err: ""}
+    resp := RefreshResponse{Success: true, Id: id, Err: ""}
 
     if (!is_valid_pair(currency)) {
-        resp.success = false
-        resp.err = "invalid pair"
-        resp.id = ""
+        resp.Success = false
+        resp.Err = "invalid pair"
+        resp.Id = ""
         
         resp_bytes, _ := json.Marshal(resp)
         fmt.Fprint(w, string(resp_bytes))
