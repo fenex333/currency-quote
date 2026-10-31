@@ -22,8 +22,8 @@ type Message struct {
 }
 
 type Result struct {
-    price string `json:"price"`
-    time string  `json:"time"`
+    price float64 `json:"price"`
+    time  int64   `json:"time"`
 }
 
 type ExchangeRates struct {
@@ -70,6 +70,7 @@ func background_refresh() {
             fmt.Printf("refreshing failed: %v\n", err)
             continue
         }
+        fmt.Println(string(body)) // remove
         
         // add sql entry (id, price, time)
     }
@@ -78,9 +79,10 @@ func background_refresh() {
 func api_refresh(w http.ResponseWriter, r *http.Request) {  
     id := generate_id()
     currency := r.URL.RawQuery
+    fmt.Println(string(currency)) // remove
 
     if (!is_valid_pair(currency)) {
-        // respond with error
+        fmt.Fprint(w, "error") // replace with json
     }
 
     trigger <- Message{id: id, currency: currency}
