@@ -9,7 +9,7 @@ import (
 )
 
 const id_len int = 20
-var trigger string
+var trigger chan string
 var exchange_url string
 var exchange_key string
 
