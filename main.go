@@ -58,11 +58,11 @@ func background_refresh() {
     for {
         msg := <-trigger
         resp, err := http.Get(query + "&base=" + msg.currency[:3] + "&symbols=" + msg.currency[4:])
-        defer resp.Body.Close()
         if err != nil {
             fmt.Printf("refreshing failed: %v\n", err)
             continue
         }
+        defer resp.Body.Close()
 
         var exchange_rates ExchangeRates
         body, _ := io.ReadAll(resp.Body)
