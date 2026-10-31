@@ -65,7 +65,7 @@ func background_refresh() {
         }
 
         var exchange_rates ExchangeRates
-        body := io.ReadAll(resp.Body)
+        body, _ := io.ReadAll(resp.Body)
         err2 := json.Unmarshal(body, &exchange_rates)
         if err2 != nil {
             fmt.Printf("refreshing failed: %v\n", err2)
