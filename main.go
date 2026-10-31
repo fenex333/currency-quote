@@ -48,7 +48,7 @@ func main() {
     exchange_url = os.Getenv("EXCHANGE_URL")
     exchange_key = os.Getenv("EXCHANGE_KEY")
 
-    trigger = make(chan bool)
+    trigger = make(chan string)
     go background_refresh()
     
     http.HandleFunc("/refresh",   api_refresh)
