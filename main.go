@@ -4,18 +4,27 @@ import (
     "net/http"
 )
 
-func refresh(w http.ResponseWriter, r *http.Request) {
+var exchange_url string
+var exchange_key string
+
+func background_refresh() {
 }
 
-func getquote(w http.ResponseWriter, r *http.Request) {
+func api_refresh(w http.ResponseWriter, r *http.Request) {
 }
 
-func lastquote(w http.ResponseWriter, r *http.Request) {
+func api_getquote(w http.ResponseWriter, r *http.Request) {
+}
+
+func api_lastquote(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-    http.HandleFunc("/refresh", refresh)
-    http.HandleFunc("/getquote", getquote)
-    http.HandleFunc("/lastquote", lastquote)
+    exchange_url = os.Args[1]
+    exchange_key = os.Args[2]
+    
+    http.HandleFunc("/refresh",   api_refresh)
+    http.HandleFunc("/getquote",  api_getquote)
+    http.HandleFunc("/lastquote", api_lastquote)
     http.ListenAndServe(":8080", nil)
 }
