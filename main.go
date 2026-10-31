@@ -80,7 +80,6 @@ func background_refresh() {
 func api_refresh(w http.ResponseWriter, r *http.Request) {  
     id := generate_id()
     currency := r.URL.RawQuery
-    fmt.Println(string(currency)) // remove
 
     if (!is_valid_pair(currency)) {
         fmt.Fprint(w, "error") // replace with json
