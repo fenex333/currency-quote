@@ -1,6 +1,7 @@
 package main	
 
 import (
+    "os"
     "net/http"
 )
 
@@ -20,11 +21,12 @@ func api_lastquote(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-    exchange_url = os.Args[1]
-    exchange_key = os.Args[2]
+    exchange_url = os.Getenv("EXCHANGE_URL")
+    exchange_key = os.Getenv("EXCHANGE_KEY")
     
     http.HandleFunc("/refresh",   api_refresh)
     http.HandleFunc("/getquote",  api_getquote)
     http.HandleFunc("/lastquote", api_lastquote)
+    
     http.ListenAndServe(":8080", nil)
 }
