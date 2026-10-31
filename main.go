@@ -45,10 +45,6 @@ func generate_id() string {
 }
 
 func is_valid_pair(pair string) bool {
-    if len(pair) != 7 {
-        return false
-    }
-    
     for i := range n_pairs {
         if pair == pairs[i] {
             return true
@@ -88,6 +84,7 @@ func api_refresh(w http.ResponseWriter, r *http.Request) {
 
     if (!is_valid_pair(currency)) {
         fmt.Fprint(w, "error") // replace with json
+        return
     }
 
     trigger <- Message{id: id, currency: currency}
