@@ -2,9 +2,9 @@
 Simple currency quote server written in Go
 
 ## Dependencies
-Go >=1.27
-Postgres >=16
-Docker (optional)
+- Go >=1.27
+- Postgres >=16
+- Docker (optional)
 
 ## Running
 
