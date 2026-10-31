@@ -10,8 +10,7 @@ import (
 
 const id_len int = 20
 const n_pairs int = 6
-const pairs = [n_pairs]string{"USD/EUR", "USD/MXN", "EUR/USD", "EUR/MXN", "MXN/USD", "MXN/EUR"}
-
+var pairs = [n_pairs]string{"USD/EUR", "USD/MXN", "EUR/USD", "EUR/MXN", "MXN/USD", "MXN/EUR"}
 var trigger chan message
 var exchange_url string
 var exchange_key string
@@ -42,7 +41,7 @@ func is_valid_pair(pair string) bool {
 
 func background_refresh() {
     for {
-        msg := <-trigger
+        _ := <-trigger
         // refresh
     }
 }
