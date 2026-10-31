@@ -9,27 +9,16 @@ import (
 )
 
 const id_len int = 20
-var trigger chan string
+const n_pairs int = 6
+const pairs = [n_pairs]string{"USD/EUR", "USD/MXN", "EUR/USD", "EUR/MXN", "MXN/USD", "MXN/EUR"}
+
+var trigger chan message
 var exchange_url string
 var exchange_key string
 
-func background_refresh() {
-    for {
-        _ = <-trigger
-        // refresh
-    }
-}
-
-func api_refresh(w http.ResponseWriter, r *http.Request) {
-    id := generate_id()
-    trigger <- id
-    fmt.Fprint(w, id)
-}
-
-func api_getquote(w http.ResponseWriter, r *http.Request) {
-}
-
-func api_lastquote(w http.ResponseWriter, r *http.Request) {
+type message struct {
+    id string
+    currency string
 }
 
 func generate_id() string {
@@ -42,11 +31,40 @@ func generate_id() string {
   return hex.EncodeToString(bytes)
 }
 
+func is_valid_pair(pair string) bool {
+    for i := range n_pairs {
+        if pair == pairs[i] {
+            return true
+        }
+    }
+    return false
+}
+
+func background_refresh() {
+    for {
+        msg := <-trigger
+        // refresh
+    }
+}
+
+func api_refresh(w http.ResponseWriter, r *http.Request) {
+    id := generate_id()
+    currency = 
+    trigger <- message{id: id, currency: currency}
+    fmt.Fprint(w, id)
+}
+
+func api_getquote(w http.ResponseWriter, r *http.Request) {
+}
+
+func api_lastquote(w http.ResponseWriter, r *http.Request) {
+}
+
 func main() {
     exchange_url = os.Getenv("EXCHANGE_URL")
     exchange_key = os.Getenv("EXCHANGE_KEY")
 
-    trigger = make(chan string)
+    trigger = make(chan message)
     go background_refresh()
     
     http.HandleFunc("/refresh",   api_refresh)
