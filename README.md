@@ -16,7 +16,7 @@ Simple currency quote server written in Go
 
 ## Running
 
-Create .env file following .env.example, then run commands below
+Create ```.env``` file following ```.env.example```, then run commands below
 ```
 $ docker run --rm -d --name postgres -p 5432:5432 postgres:16
 $ source .env
