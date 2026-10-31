@@ -21,13 +21,13 @@ type message struct {
 }
 
 func generate_id() string {
-  bytes := make([]byte, id_len)
-  if _, err := rand.Read(bytes); err != nil {
-      fmt.Fprintf(os.Stderr, "error: %v\n", err)
-      os.Exit(1)
-      return ""
-  }
-  return hex.EncodeToString(bytes)
+    bytes := make([]byte, id_len)
+    if _, err := rand.Read(bytes); err != nil {
+        fmt.Fprintf(os.Stderr, "error: %v\n", err)
+        os.Exit(1)
+        return ""
+    }
+    return hex.EncodeToString(bytes)
 }
 
 func is_valid_pair(pair string) bool {
