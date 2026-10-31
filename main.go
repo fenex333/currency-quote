@@ -23,6 +23,7 @@ func background_refresh() {
 func api_refresh(w http.ResponseWriter, r *http.Request) {
     id := generate_id()
     trigger <- id
+    fmt.Fprint(w, id)
 }
 
 func api_getquote(w http.ResponseWriter, r *http.Request) {
