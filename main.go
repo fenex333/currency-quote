@@ -43,9 +43,6 @@ func generate_id() string {
 }
 
 func main() {
-    val := generate_id()
-    fmt.Println(val)
-    
     exchange_url = os.Getenv("EXCHANGE_URL")
     exchange_key = os.Getenv("EXCHANGE_KEY")
 
