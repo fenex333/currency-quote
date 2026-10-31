@@ -11,13 +11,18 @@ import (
 const id_len int = 20
 const n_pairs int = 6
 var pairs = [n_pairs]string{"USD/EUR", "USD/MXN", "EUR/USD", "EUR/MXN", "MXN/USD", "MXN/EUR"}
-var trigger chan message
+var trigger chan Message
 var exchange_url string
 var exchange_key string
 
-type message struct {
+type Message struct {
     id string
     currency string
+}
+
+type Result struct {
+    price string `json:"price"`
+    time string `json:"time"`
 }
 
 func generate_id() string {
@@ -62,7 +67,7 @@ func api_refresh(w http.ResponseWriter, r *http.Request) {
         // respond with error
     }
 
-    trigger <- message{id: id, currency: currency}
+    trigger <- Message{id: id, currency: currency}
     fmt.Fprint(w, id) // replace with json
 }
 
@@ -78,7 +83,7 @@ func main() {
     exchange_url = os.Getenv("EXCHANGE_URL")
     exchange_key = os.Getenv("EXCHANGE_KEY")
 
-    trigger = make(chan message)
+    trigger = make(chan Message)
     go background_refresh()
     
     http.HandleFunc("/refresh",   api_refresh)
