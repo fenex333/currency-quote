@@ -18,7 +18,7 @@ Simple exchange rate provider written in Go
 
 Create ```.env``` file following ```.env.example```, then run commands below
 ```
-$ docker run --rm -d --name postgres -p 5432:5432 postgres:16
+$ docker run --rm -d --name postgres -e PGUSER=pg -e PGPASSWORD=pg -e PGDATABASE=pg -p 5432:5432 postgres:16
 $ set -a && source .env && set +a
 $ go run main.go
 ```
