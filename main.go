@@ -71,7 +71,10 @@ func background_refresh() {
             fmt.Printf("refreshing failed: %v\n", err2)
             continue
         }
-        fmt.Println(string(body)) // remove
+        if !exchange_rates.success {
+            fmt.Println("refreshing failed: provider declined")
+            continue
+        }
         
         // add sql entry (id, price, time)
     }
