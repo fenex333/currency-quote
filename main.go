@@ -22,7 +22,15 @@ type Message struct {
 
 type Result struct {
     price string `json:"price"`
-    time string `json:"time"`
+    time string  `json:"time"`
+}
+
+type ExchangeRates struct {
+    success   bool               `json:"success"`
+    timestamp int64              `json:"timestamp"`
+    base      string             `json:"base"`
+    date      string             `json:"date"`
+    rates     map[string]float64 `json:"rates"`
 }
 
 func generate_id() string {
