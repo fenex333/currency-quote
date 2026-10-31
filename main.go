@@ -46,7 +46,7 @@ func background_refresh() {
         resp, err := http.Get(query + "&base=" + msg.currency[:3] + "&symbols=" + msg.currency[4:])
         defer resp.Body.Close()
         if err != nil {
-            fmt.printf("refreshing failed: %v\n", err)
+            fmt.Printf("refreshing failed: %v\n", err)
             continue
         }
 
