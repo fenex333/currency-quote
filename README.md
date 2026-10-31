@@ -1,6 +1,14 @@
 # currency-quote
 Simple currency quote server written in Go
 
+## Supported Pairs
+- USD/EUR
+- USD/MXN
+- EUR/USD
+- EUR/MXN
+- MXN/USD
+- MXN/EUR
+
 ## Dependencies
 - Go >=1.27
 - Postgres >=16
