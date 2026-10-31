@@ -1,5 +1,5 @@
 # currency-quote
-Simple currency quote server written in Go
+Simple exchange rate provider written in Go
 
 ## Supported Pairs
 - USD/EUR
