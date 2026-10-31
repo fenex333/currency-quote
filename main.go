@@ -40,9 +40,10 @@ func is_valid_pair(pair string) bool {
 }
 
 func background_refresh() {
+    query := exchange_url + "latest?access_key=" + exchange_key
     for {
-        _ := <-trigger
-        // refresh
+        msg := <-trigger
+        resp, err := http.Get(query + "&base=" + msg.currency[:3] + "&symbols=" + msg.currency[4:])
     }
 }
 
