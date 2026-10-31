@@ -22,6 +22,12 @@ type Message struct {
     currency string
 }
 
+type RefreshResponse struct {
+    success bool    `json:"success"`
+    id      string  `json:"id"`
+    err     string  `json:"err"`
+}
+
 type Result struct {
     price float64 `json:"price"`
     time  int64   `json:"time"`
@@ -83,22 +89,29 @@ func background_refresh() {
 func api_refresh(w http.ResponseWriter, r *http.Request) {  
     id := generate_id()
     currency := r.URL.RawQuery
+    resp := RefreshResponse{success: true, id: id, err: ""}
 
     if (!is_valid_pair(currency)) {
-        fmt.Fprint(w, "error") // replace with json
+        resp.success = false
+        resp.err = "invalid pair"
+        resp.id = ""
+        
+        resp_bytes, _ := json.Marshal(resp)
+        fmt.Fprint(w, string(resp_bytes))
         return
     }
 
     trigger <- Message{id: id, currency: currency}
-    fmt.Fprint(w, id) // replace with json
+    resp_bytes, _ := json.Marshal(resp)
+    fmt.Fprint(w, string(resp_bytes))
 }
 
 func api_getquote(w http.ResponseWriter, r *http.Request) {
-    // get price & time by id
+    //SELECT * FROM rates WHERE id = $1 LIMIT 1;
 }
 
 func api_lastquote(w http.ResponseWriter, r *http.Request) {
-    // get last price & time by pair
+    //SELECT * FROM your_table WHERE pair = $1 ORDER BY time DESC LIMIT 1;
 }
 
 func main() {
