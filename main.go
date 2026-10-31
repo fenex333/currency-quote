@@ -1,6 +1,7 @@
 package main	
 
 import (
+    "io"
     "os"
     "fmt"
     "net/http"
@@ -65,9 +66,9 @@ func background_refresh() {
 
         var exchange_rates ExchangeRates
         body := io.ReadAll(resp.Body)
-        err := json.Unmarshal(body, &exchange_rates)
-        if err != nil {
-            fmt.Printf("refreshing failed: %v\n", err)
+        err2 := json.Unmarshal(body, &exchange_rates)
+        if err2 != nil {
+            fmt.Printf("refreshing failed: %v\n", err2)
             continue
         }
         fmt.Println(string(body)) // remove
