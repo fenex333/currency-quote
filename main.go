@@ -44,6 +44,13 @@ func background_refresh() {
     for {
         msg := <-trigger
         resp, err := http.Get(query + "&base=" + msg.currency[:3] + "&symbols=" + msg.currency[4:])
+        defer resp.Body.Close()
+        if err != nil {
+            fmt.printf("refreshing failed: %v\n", err)
+            continue
+        }
+
+        // add sql entry (id, price, time)
     }
 }
 
@@ -56,13 +63,15 @@ func api_refresh(w http.ResponseWriter, r *http.Request) {
     }
 
     trigger <- message{id: id, currency: currency}
-    fmt.Fprint(w, id)
+    fmt.Fprint(w, id) // replace with json
 }
 
 func api_getquote(w http.ResponseWriter, r *http.Request) {
+    // get price & time by id
 }
 
 func api_lastquote(w http.ResponseWriter, r *http.Request) {
+    // get last price & time by pair
 }
 
 func main() {
