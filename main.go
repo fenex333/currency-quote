@@ -6,6 +6,7 @@ import (
     "net/http"
     "crypto/rand"
     "encoding/hex"
+    "encoding/json"
 )
 
 const id_len int = 20
@@ -36,8 +37,7 @@ type ExchangeRates struct {
 func generate_id() string {
     bytes := make([]byte, id_len)
     if _, err := rand.Read(bytes); err != nil {
-        fmt.Fprintf(os.Stderr, "error: %v\n", err)
-        os.Exit(1)
+        panic(err)
         return ""
     }
     return hex.EncodeToString(bytes)
@@ -63,6 +63,14 @@ func background_refresh() {
             continue
         }
 
+        var exchange_rates ExchangeRates
+        body := io.ReadAll(resp.Body)
+        err := json.Unmarshal(body, &exchange_rates)
+        if err != nil {
+            fmt.Printf("refreshing failed: %v\n", err)
+            continue
+        }
+        
         // add sql entry (id, price, time)
     }
 }
