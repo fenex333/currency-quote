@@ -4,13 +4,13 @@ import (
     "net/http"
 )
 
-func refresh(w http.ResponseWriter, req *http.Request) {
+func refresh(w http.ResponseWriter, r *http.Request) {
 }
 
-func getquote(w http.ResponseWriter, req *http.Request) {
+func getquote(w http.ResponseWriter, r *http.Request) {
 }
 
-func lastquote(w http.ResponseWriter, req *http.Request) {
+func lastquote(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
