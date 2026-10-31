@@ -47,9 +47,14 @@ func background_refresh() {
     }
 }
 
-func api_refresh(w http.ResponseWriter, r *http.Request) {
+func api_refresh(w http.ResponseWriter, r *http.Request) {  
     id := generate_id()
-    currency = 
+    currency := r.URL.RawQuery
+
+    if (!is_valid_pair(currency)) {
+        // respond with error
+    }
+
     trigger <- message{id: id, currency: currency}
     fmt.Fprint(w, id)
 }
