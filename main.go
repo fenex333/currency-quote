@@ -19,6 +19,7 @@ var pairs = [n_pairs]string{"USD/EUR", "USD/MXN", "EUR/USD", "EUR/MXN", "MXN/USD
 var trigger chan Message
 var exchange_url string
 var exchange_key string
+var db DB
 
 type Message struct {
     id string
@@ -110,7 +111,7 @@ func background_refresh() {
         entry := RateEntry{
             Id: msg.id,
             Pair: msg.currency,
-            Time: exchange_rates.timestamp,
+            Time: exchange_rates.Timestamp,
             Rate: exchange_rates.Rates[msg.currency[4:]]}
         
         db.Create(&entry)
@@ -138,10 +139,10 @@ func api_refresh(w http.ResponseWriter, r *http.Request) {
 }
 
 func api_getquote(w http.ResponseWriter, r *http.Request) {
-    var entry RatesEntry
+    var entry RateEntry
     var result Result
     
-    id = r.URL.RawQuery
+    id := r.URL.RawQuery
     err := db.First(&entry, "Id = ?", id).Error
     
     if err != nil {
@@ -161,10 +162,10 @@ func api_getquote(w http.ResponseWriter, r *http.Request) {
 }
 
 func api_lastquote(w http.ResponseWriter, r *http.Request) {
-    var entry RatesEntry
+    var entry RateEntry
     var result Result
     
-    pair = r.URL.RawQuery
+    pair := r.URL.RawQuery
     err := db.Where("Pair = ?", pair).Order("Time DESC").First(&entry).Error
     
     if err != nil {
