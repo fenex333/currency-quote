@@ -8,6 +8,8 @@ import (
     "crypto/rand"
     "encoding/hex"
     "encoding/json"
+
+    "github.com/jackc/pgx/v5"
 )
 
 const id_len int = 20
