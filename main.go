@@ -47,10 +47,11 @@ type ExchangeRates struct {
 }
 
 type RateEntry struct {
-    Id   string
-    Pair string
-    Time int64
-    Rate float64
+    gorm.Model
+    Id   string  `gorm:"type:varchar(20);not null"`
+    Pair string  `gorm:"type:varchar(7);not null"`
+    Time int64   `gorm:"type:bigint(100);not null"`
+    Rate float64 `gorm:"type:decimal(8,8);not null"`
 }
 
 func generate_id() string {
@@ -105,8 +106,14 @@ func background_refresh() {
             fmt.Println("refreshing failed: provider declined")
             continue
         }
-        
-        // add sql entry (id, price, time)
+
+        entry := RateEntry{
+            Id: msg.id,
+            Pair: msg.currency,
+            Time: exchange_rates.timestamp,
+            Rate: exchange_rates.Rates[msg.currency[4:]]
+        }
+        db.Create(&entry)
     }
 }
 
@@ -144,6 +151,10 @@ func main() {
 
     dsn := "host=localhost user=pg password=pg dbname=pg port=5432"
     db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+    if err != nil {
+        panic("Failed to connect to database")
+    }
+    db.AutoMigrate(&RateEntry{})
 
     trigger = make(chan Message, 100)
     go background_refresh()
