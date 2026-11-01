@@ -111,8 +111,8 @@ func background_refresh() {
             Id: msg.id,
             Pair: msg.currency,
             Time: exchange_rates.timestamp,
-            Rate: exchange_rates.Rates[msg.currency[4:]]
-        }
+            Rate: exchange_rates.Rates[msg.currency[4:]]}
+        
         db.Create(&entry)
     }
 }
