@@ -191,9 +191,13 @@ func main() {
     dsn := "host=localhost user=pg password=pg dbname=pg port=5432 sslmode=disable"
     db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
     if err != nil {
-        panic("Failed to connect to database")
+        panic(fmt.Sprintf("Failed to connect to database: %v", err))
     }
-    db.AutoMigrate(&RateEntry{})
+    
+    err := db.AutoMigrate(&RateEntry{})
+    if err != nil {
+        panic(fmt.Sprintf("Failed to migrate database: %v", err))
+    }
 
     trigger = make(chan Message, 100)
     go background_refresh()
