@@ -9,7 +9,8 @@ import (
     "encoding/hex"
     "encoding/json"
 
-    "github.com/jackc/pgx/v5"
+    "gorm.io/driver/postgres"
+    "gorm.io/gorm"
 )
 
 const id_len int = 20
