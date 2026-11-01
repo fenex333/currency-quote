@@ -118,31 +118,69 @@ func background_refresh() {
 }
 
 func api_refresh(w http.ResponseWriter, r *http.Request) {  
+    var resp RefreshResponse
     id := generate_id()
     currency := r.URL.RawQuery
-    resp := RefreshResponse{Success: true, Id: id, Err: ""}
-
-    if (!is_valid_pair(currency)) {
+    
+    if (is_valid_pair(currency)) {
+        resp.Success = true
+        resp.Err = ""
+        resp.Id = id
+        trigger <- Message{id: id, currency: currency}
+    } else {
         resp.Success = false
         resp.Err = "invalid pair"
         resp.Id = ""
-        
-        resp_bytes, _ := json.Marshal(resp)
-        fmt.Fprint(w, string(resp_bytes))
-        return
     }
 
-    trigger <- Message{id: id, currency: currency}
     resp_bytes, _ := json.Marshal(resp)
     fmt.Fprint(w, string(resp_bytes))
 }
 
 func api_getquote(w http.ResponseWriter, r *http.Request) {
-    //SELECT * FROM rates WHERE id = $1 LIMIT 1;
+    var entry RatesEntry
+    var result Result
+    
+    id = r.URL.RawQuery
+    err := db.First(&entry, "Id = ?", id).Error
+    
+    if err != nil {
+        result.Success = false
+        result.Err = "failed fetching database entry"
+        result.Price = 0.0
+        result.Time = 0
+    } else {
+        result.Success = true
+        result.Err = ""
+        result.Price = entry.Rate
+        result.Time = entry.Time
+    }
+    
+    resp_bytes, _ := json.Marshal(result)
+    fmt.Fprint(w, string(resp_bytes))
 }
 
 func api_lastquote(w http.ResponseWriter, r *http.Request) {
-    //SELECT * FROM your_table WHERE pair = $1 ORDER BY time DESC LIMIT 1;
+    var entry RatesEntry
+    var result Result
+    
+    pair = r.URL.RawQuery
+    err := db.Where("Pair = ?", pair).Order("Time DESC").First(&entry).Error
+    
+    if err != nil {
+        result.Success = false
+        result.Err = "failed fetching database entry"
+        result.Price = 0.0
+        result.Time = 0
+    } else {
+        result.Success = true
+        result.Err = ""
+        result.Price = entry.Rate
+        result.Time = entry.Time
+    }
+    
+    resp_bytes, _ := json.Marshal(result)
+    fmt.Fprint(w, string(resp_bytes))
 }
 
 func main() {
