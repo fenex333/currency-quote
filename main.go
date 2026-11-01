@@ -188,7 +188,7 @@ func main() {
     exchange_url = os.Getenv("EXCHANGE_URL")
     exchange_key = os.Getenv("EXCHANGE_KEY")
 
-    dsn := "host=localhost user=pg password=pg dbname=pg port=5432"
+    dsn := "host=localhost user=pg password=pg dbname=pg port=5432 sslmode=disable"
     db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
     if err != nil {
         panic("Failed to connect to database")
