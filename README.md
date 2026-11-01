@@ -11,8 +11,7 @@ Simple exchange rate provider written in Go
 
 ## Dependencies
 - Go >=1.27
-- Postgres >=16
-- Docker (optional)
+- Postgres >=16 or Docker
 
 ## Running
 Create an API key for exchangeratesapi.io <br>
