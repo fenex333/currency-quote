@@ -15,7 +15,7 @@ Simple exchange rate provider written in Go
 - Docker (optional)
 
 ## Running
-Create an API key for exchangeratesapi.io
+Create an API key for exchangeratesapi.io <br>
 Create ```.env``` file following ```.env.example```, then run commands below
 ```
 $ sudo docker run --rm -d -e POSTGRES_PASSWORD=pg -e POSTGRES_DB=pg -e POSTGRES_USER=pg -p 5432:5432 postgres:16
