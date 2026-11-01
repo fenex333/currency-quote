@@ -29,8 +29,10 @@ type RefreshResponse struct {
 }
 
 type Result struct {
-    Price float64 `json:"price"`
-    Time  int64   `json:"time"`
+    Success bool    `json:"success"`
+    Err     string  `json:"err"`
+    Price   float64 `json:"price"`
+    Time    int64   `json:"time"`
 }
 
 type ExchangeRates struct {
@@ -65,18 +67,30 @@ func background_refresh() {
         msg := <-trigger
         resp, err := http.Get(query + "&base=" + msg.currency[:3] + "&symbols=" + msg.currency[4:])
         if err != nil {
-            fmt.Printf("refreshing failed: %v\n", err)
+            fmt.Printf("requesting exchange API failed: %v\n", err)
             continue
         }
-        defer resp.Body.Close()
+
+        if resp.StatusCode != http.StatusOK {
+            fmt.Printf("exchange API returned status: %s\n", resp.Status)
+            resp.Body.Close()
+            continue
+        }
+        
+        body, err2 := io.ReadAll(resp.Body)
+        resp.Body.Close()
+        if err2 != nil {
+            fmt.Printf("failed to read exchange response: %v\n", err2)
+            continue
+        }
 
         var exchange_rates ExchangeRates
-        body, _ := io.ReadAll(resp.Body)
-        err2 := json.Unmarshal(body, &exchange_rates)
-        if err2 != nil {
-            fmt.Printf("refreshing failed: %v\n", err2)
+        err3 := json.Unmarshal(body, &exchange_rates)
+        if err3 != nil {
+            fmt.Printf("failed to unmarshal exchange responce: %v\n", err3)
             continue
         }
+        
         if !exchange_rates.Success {
             fmt.Println("refreshing failed: provider declined")
             continue
@@ -118,7 +132,7 @@ func main() {
     exchange_url = os.Getenv("EXCHANGE_URL")
     exchange_key = os.Getenv("EXCHANGE_KEY")
 
-    trigger = make(chan Message)
+    trigger = make(chan Message, 100)
     go background_refresh()
     
     http.HandleFunc("/refresh",   api_refresh)
