@@ -19,7 +19,7 @@ var pairs = [n_pairs]string{"USD/EUR", "USD/MXN", "EUR/USD", "EUR/MXN", "MXN/USD
 var trigger chan Message
 var exchange_url string
 var exchange_key string
-var db DB
+var db gorm.DB
 
 type Message struct {
     id string
