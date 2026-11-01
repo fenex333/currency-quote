@@ -48,7 +48,6 @@ type ExchangeRates struct {
 }
 
 type RateEntry struct {
-    gorm.Model
     Id   string  `gorm:"type:varchar(20);not null"`
     Pair string  `gorm:"type:varchar(7);not null"`
     Time int64   `gorm:"type:bigint;not null"`
