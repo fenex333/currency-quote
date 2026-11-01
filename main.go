@@ -186,9 +186,9 @@ func api_lastquote(w http.ResponseWriter, r *http.Request) {
 func main() {
     exchange_url = os.Getenv("EXCHANGE_URL")
     exchange_key = os.Getenv("EXCHANGE_KEY")
+    dsn := os.Getenv("DSN")
 
     var err error
-    dsn := "host=localhost user=pg password=pg dbname=pg port=5432 sslmode=disable"
     db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
     if err != nil {
         panic(fmt.Sprintf("Failed to connect to database: %v", err))
