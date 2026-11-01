@@ -46,6 +46,13 @@ type ExchangeRates struct {
     Rates     map[string]float64 `json:"rates"`
 }
 
+type RateEntry struct {
+    Id   string
+    Pair string
+    Time int64
+    Rate float64
+}
+
 func generate_id() string {
     bytes := make([]byte, id_len)
     if _, err := rand.Read(bytes); err != nil {
@@ -134,6 +141,9 @@ func api_lastquote(w http.ResponseWriter, r *http.Request) {
 func main() {
     exchange_url = os.Getenv("EXCHANGE_URL")
     exchange_key = os.Getenv("EXCHANGE_KEY")
+
+    dsn := "host=localhost user=pg password=pg dbname=pg port=5432"
+    db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
     trigger = make(chan Message, 100)
     go background_refresh()
