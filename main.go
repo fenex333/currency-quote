@@ -19,7 +19,7 @@ var pairs = [n_pairs]string{"USD/EUR", "USD/MXN", "EUR/USD", "EUR/MXN", "MXN/USD
 var trigger chan Message
 var exchange_url string
 var exchange_key string
-var db gorm.DB
+var db *gorm.DB
 
 type Message struct {
     id string
@@ -194,7 +194,7 @@ func main() {
         panic(fmt.Sprintf("Failed to connect to database: %v", err))
     }
     
-    err := db.AutoMigrate(&RateEntry{})
+    err = db.AutoMigrate(&RateEntry{})
     if err != nil {
         panic(fmt.Sprintf("Failed to migrate database: %v", err))
     }
