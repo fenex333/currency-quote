@@ -51,7 +51,7 @@ type RateEntry struct {
     Id   string  `gorm:"type:varchar(40);not null"`
     Pair string  `gorm:"type:varchar(7);not null"`
     Time int64   `gorm:"type:bigint;not null"`
-    Rate float64 `gorm:"type:decimal(8,8);not null"`
+    Rate float64 `gorm:"type:decimal(16,8);not null"`
 }
 
 func generate_id() string {
