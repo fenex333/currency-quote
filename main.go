@@ -51,7 +51,7 @@ type RateEntry struct {
     gorm.Model
     Id   string  `gorm:"type:varchar(20);not null"`
     Pair string  `gorm:"type:varchar(7);not null"`
-    Time int64   `gorm:"type:bigint(100);not null"`
+    Time int64   `gorm:"type:bigint;not null"`
     Rate float64 `gorm:"type:decimal(8,8);not null"`
 }
 
