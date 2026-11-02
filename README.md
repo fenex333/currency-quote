@@ -24,8 +24,8 @@ $ go run main.go
 ```
 Alternatively, build and run the Docker image (Postgres is not included and must be run separately)
 ```
-docker build -t currency-quote .
-docker run --rm -d \
+$ docker build -t currency-quote .
+$ docker run --rm -d \
     --name currency-quote \
     --network host \
     --env-file .env \
