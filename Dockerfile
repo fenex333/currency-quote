@@ -17,10 +17,6 @@ RUN apk add --no-cache ca-certificates
 
 COPY --from=builder /out/currency-quote /usr/local/bin/currency-quote
 
-# edit as needed
-ENV EXCHANGE_URL="" \
-    EXCHANGE_KEY=""
-
 EXPOSE 8080
 
 ENTRYPOINT ["currency-quote"]
